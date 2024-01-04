@@ -30,8 +30,11 @@ class ProductsController extends Controller
     {
         if(Auth::check())
         {
+            $name = $this->productService->getName((int)$productsRequest->input('id'));
+            $price = $this->productService->getPrice((int)$productsRequest['id']);
+            $weight = $this->productService->getWeight((int)$productsRequest['id']);
 
-            return view('index', []);
+            return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight]);
         }
 
         return redirect()->back();
