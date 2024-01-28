@@ -36,10 +36,17 @@ class ProductService
 
         return $weight[0]['price'];
     }
-    public function create(float $price, float $weight, int $categoryId): Model
+    public function getCategoryId(int $id): int
+    {
+        $categoryId = Product::query()->find($id)->get('category_id');
+
+        return $categoryId[0]['category_id'];
+    }
+    public function create(string $name, float $price, float $weight, int $categoryId): Model
     {
         $productIsCreated = Product::query()->create([
 
+            'name' => $name,
             'price' => $price,
             'weight' => $weight,
             'category_id' => $categoryId,
