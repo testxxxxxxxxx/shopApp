@@ -9,6 +9,7 @@ use App\Http\Requests\ProductsRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
 
 class ProductsController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductsController extends Controller
 
     }
 
-    public function index(ProductsRequest $productsRequest): Factory
+    public function index(): View | RedirectResponse
     {
         if(Auth::check())
         {
@@ -28,7 +29,7 @@ class ProductsController extends Controller
 
         return redirect()->back();
     }
-    public function show(IdRequest $idRequest): Factory
+    public function show(IdRequest $idRequest): View | RedirectResponse
     {
         if(Auth::check())
         {

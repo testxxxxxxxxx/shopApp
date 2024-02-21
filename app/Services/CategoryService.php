@@ -21,9 +21,9 @@ class CategoryService
 
         return $name[0]['name'];
     }
-    public function create(string $name): Model
+    public function create(string $name): int
     {
-        $categoryIsCreated = Category::query()->create([
+        $categoryIsCreated = Category::query()->insertGetId([
 
             'name' => $name,
 

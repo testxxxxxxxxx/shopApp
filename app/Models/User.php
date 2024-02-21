@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -42,4 +44,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function ordersFrom(): HasMany
+    {
+
+        return $this->hasMany(Order::class, 'from');
+    }
+    public function ordersTo(): HasMany
+    {
+
+        return $this->hasMany(Order::class, 'to_customer');
+    }
+
 }
