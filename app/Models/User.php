@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Order;
+use App\Models\PersonalDataUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
@@ -54,6 +55,11 @@ class User extends Authenticatable
     {
 
         return $this->hasMany(Order::class, 'to_customer');
+    }
+    public function personalDataUser(): HasMany
+    {
+
+        return $this->hasMany(PersonalDataUser::class);
     }
 
 }

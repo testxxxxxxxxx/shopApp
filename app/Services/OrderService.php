@@ -21,27 +21,27 @@ class OrderService
 
         return $allOrders;
     }
-    public function getProductId(int $id): int
+    public function getProductId(int $userId): int
     {
-        $productId = Order::query()->find($id)->get('product_id');
+        $productId = Order::query()->where('from', $userId)->get('product_id');
 
         return $productId[0]['product_id'];
     }
-    public function getDate(int $id): string
+    public function getDate(int $userId): string
     {
-        $dateOfOrder = Order::query()->find($id)->get('date');
+        $dateOfOrder = Order::query()->where('from', $userId)->get('date');
 
         return $dateOfOrder[0]['date'];
     }
-    public function getFrom(int $id): int
+    public function getFrom(int $userId): int
     {
-        $from = Order::query()->find($id)->get('from');
+        $from = Order::query()->where('from', $userId)->get('from');
 
         return $from[0]['from'];
     }
-    public function getToCustomer(int $id): int
+    public function getToCustomer(int $userId): int
     {
-        $toCustomer = Order::query()->find($id)->get('to_customer');
+        $toCustomer = Order::query()->where('from', $userId)->get('to_customer');
 
         return $toCustomer[0]['to_customer'];
     }
