@@ -7,6 +7,7 @@ use App\Services\PersonalDataUserService;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\PersonalDateRequest;
 use App\Http\Requests\UserIdRequest;
+use App\Models\PersonalDataUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,36 @@ class PersonalDataController extends Controller
                 return redirect()->route('showPersonalData');
 
             return redirect()->back();
+        }
+
+        return redirect()->back();
+    }
+    public function update(IdRequest $idRequest, PersonalDataUser $personalDataUser, UserIdRequest $userIdRequest): RedirectResponse
+    {
+        if(Auth::check())
+        {
+            $id = $idRequest->input('id');
+            $name = $personalDataUser['name'];
+            $lastname = $personalDataUser['lastname'];
+            $streetName = $personalDataUser['streetName'];
+            $hauseNumber = $personalDataUser['hauseNumber'];
+            $zipCode = $personalDataUser['zipCode'];
+            $city = $personalDataUser['city'];
+            $country = $personalDataUser['country'];
+            $userId = $userIdRequest['userId'];
+
+            $personalDataIsUpdated = $this->personalDataUserService->update($id, $name, $lastname, $streetName, $hauseNumber, $zipCode, $city, $country, $userId);
+
+            if($personalDataIsUpdated)
+            {
+                $message = 'Your personal data has been updated!';
+
+                return redirect()->route('showPersonalData', ['id' => $id, 'message' => $message]);
+            }
+
+            $error = 'Your personal data has not been updated!';
+
+            return redirect()->route('showPersonalData', ['id' => $id, 'error' => $error]);
         }
 
         return redirect()->back();
