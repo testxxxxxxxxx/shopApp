@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PersonalDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,15 @@ Route::domain('localhost')->group(function(){
         Route::post('/createOrder', [OrderController::class, 'create'])->name('createOrder');
         Route::post('/updateOrder', [OrderController::class, 'update'])->name('updateOrder');
         Route::post('/deleteOrder', [OrderController::class, 'delete'])->name('deleteOrder');
+        
+        Route::controller(PersonalDataController::class)->group(function(){
+
+            Route::get('/personalDataUser', 'show')->name('showPersonalDataUser');
+            Route::post('/createPersonalDataUser', 'create')->name('createPersonalDataUser');
+            Route::post('/updatePersonalDataUser', 'update')->name('updatePersonalDataUser');
+            Route::post('/deletePersonalDataUser', 'delete')->name('deletePersonalDataUser');
+
+        });
 
     });
 
