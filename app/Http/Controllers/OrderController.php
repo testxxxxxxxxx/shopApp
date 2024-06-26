@@ -10,14 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use App\Http\Requests\OrderRequest;
+use App\Services\OrderValidator;
+use App\Services\ProductService;
 use App\Services\TimeService;
 
 class OrderController extends Controller
 {
-    public function __construct(private OrderService $orderService, private TimeService $timeService)
+    public function __construct(private OrderService $orderService, private TimeService $timeService, private OrderValidator $orderValidator, private ProductService $productService)
     {
         $this->orderService = $orderService;
         $this->timeService = $timeService;
+        $this->orderValidator = $orderValidator;
+        $this->productService = $productService;
 
     }
 
@@ -59,7 +63,11 @@ class OrderController extends Controller
 
             $orderIsCreated = $this->orderService->create($productId, $date, $from, $toCustomer);
 
-            if($orderIsCreated)
+            $countOfProduct = $this->productService->getCount($productId);
+
+            $orderIsCompleted = $orderIsCreated && $this->orderValidator->isNonEmpty($productId, $countOfProduct);
+
+            if($orderIsCompleted)
                 return redirect()->route('showOrder', ['id' => $orderIsCreated]);
 
             return redirect()->back();
