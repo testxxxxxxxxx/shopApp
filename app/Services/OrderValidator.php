@@ -14,10 +14,12 @@ class OrderValidator
 
     }
 
-    public function isNonEmpty(): bool
+    public function isNonEmpty(int $id, int $count): bool
     {
+        if($count > $this->productService->getCount($id))
+            return false;
         
-        return false;
+        return true;
     }
 
 }
