@@ -8,6 +8,8 @@ use App\Services\ProductService;
 use App\Services\CategoryService;
 use App\Services\OrderService;
 use App\Services\TimeService;
+use App\Services\PersonalDataUserService;
+use App\Services\OrderValidator;
 use \DateTime;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +37,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TimeService::class,function($app){
 
             return new TimeService($app->make(DateTime::class));
+        });
+
+        $this->app->bind(PersonalDataUserService::class,function($app){
+
+            return new PersonalDataUserService();
+        });
+
+        $this->app->bind(OrderValidator::class,function($app){
+
+            return new OrderValidator($app->make(ProductService::class));
         });
         
     }
