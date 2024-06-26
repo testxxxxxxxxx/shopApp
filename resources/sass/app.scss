@@ -1,0 +1,18 @@
+body{
+
+    margin: auto;
+    padding: auto;
+    background-color: grey;
+
+}
+input{
+
+    background-color: white;
+
+    &:hover{
+
+        background-color: green;
+
+    }
+
+}

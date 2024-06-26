@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('price')->nullable(false);
             $table->float('weight')->default(0);
             $table->text('description');
+            $table->integer('count')->nullable(false);
             $table->bigInteger('category_id')->unsigned();
             $table->timestamps();
         });

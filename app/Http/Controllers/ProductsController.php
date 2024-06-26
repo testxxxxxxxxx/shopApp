@@ -37,9 +37,10 @@ class ProductsController extends Controller
             $name = $this->productService->getName((int)$idRequest->input('id'));
             $price = $this->productService->getPrice((int)$idRequest['id']);
             $weight = $this->productService->getWeight((int)$idRequest['id']);
+            $count = $this->productService->getCount((int)$idRequest['id']);
             $categoryId = $this->productService->getCategoryId((int)$idRequest['id']); 
 
-            return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'categoryId' => $categoryId]);
+            return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
         }
 
         return redirect()->back();
@@ -51,12 +52,13 @@ class ProductsController extends Controller
             $name = $productsRequest->input('name');
             $price = $productsRequest['price'];
             $weight = $productsRequest['weight'];
+            $count = $productsRequest['count'];
             $categoryId = $productsRequest['category_id'];
 
-            $productIsCreated = $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$categoryId);
+            $productIsCreated = $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$count, (int)$categoryId);
 
             if($productIsCreated)
-                return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'categoryId' => $categoryId]);
+                return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
 
             return redirect()->back();
 
@@ -73,9 +75,10 @@ class ProductsController extends Controller
             $name = $productsRequest['name'];
             $price = $productsRequest['price'];
             $weight = $productsRequest['weight'];
+            $count = $productsRequest['count'];
             $categoryId = $productsRequest['category_id'];
 
-            $productIsUpdated = $this->productService->update((int)$id, (float)$name, (float)$weight, (int)$categoryId);
+            $productIsUpdated = $this->productService->update((int)$id, (float)$name, (float)$weight, (int)$count, (int)$categoryId);
 
             if($productIsUpdated)
                 return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'categoryId' => $categoryId]);

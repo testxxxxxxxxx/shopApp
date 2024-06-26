@@ -42,22 +42,29 @@ class ProductService
 
         return $categoryId[0]['category_id'];
     }
-    public function create(string $name, float $price, float $weight, int $categoryId): Model
+    public function getCount(int $id): int
+    {
+        $count = Product::query()->find($id)->get('count');
+
+        return $count[0]['count'];
+    }
+    public function create(string $name, float $price, float $weight, int $count, int $categoryId): Model
     {
         $productIsCreated = Product::query()->create([
 
             'name' => $name,
             'price' => $price,
             'weight' => $weight,
+            'count' => $count,
             'category_id' => $categoryId,
 
         ]);
 
         return $productIsCreated;
     }
-    public function update(int $id, float $price, float $weight, int $categoryId): int
+    public function update(int $id, float $price, float $weight, int $count, int $categoryId): int
     {
-        $productIsUpdated = Product::query()->where('id', $id)->update(['price' => $price, 'weight' => $weight, 'category_id' => $categoryId]);
+        $productIsUpdated = Product::query()->where('id', $id)->update(['price' => $price, 'weight' => $weight, 'count' => $count, 'category_id' => $categoryId]);
 
         return $productIsUpdated;
     }
