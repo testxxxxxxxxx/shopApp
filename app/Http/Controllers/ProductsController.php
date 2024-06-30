@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\ProductsRequest;
-use App\Services\TimeService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -20,30 +19,20 @@ class ProductsController extends Controller
 
     }
 
-    public function index(): View | RedirectResponse
+    public function index(): View
     {
-        if(Auth::check())
-        {
         
-            return view('index', []);
-        }
-
-        return redirect()->back();
+        return view('index', []);
     }
-    public function show(IdRequest $idRequest): View | RedirectResponse
+    public function show(IdRequest $idRequest): View
     {
-        if(Auth::check())
-        {
-            $name = $this->productService->getName((int)$idRequest->input('id'));
-            $price = $this->productService->getPrice((int)$idRequest['id']);
-            $weight = $this->productService->getWeight((int)$idRequest['id']);
-            $count = $this->productService->getCount((int)$idRequest['id']);
-            $categoryId = $this->productService->getCategoryId((int)$idRequest['id']); 
+        $name = $this->productService->getName((int)$idRequest->input('id'));
+        $price = $this->productService->getPrice((int)$idRequest['id']);
+        $weight = $this->productService->getWeight((int)$idRequest['id']);
+        $count = $this->productService->getCount((int)$idRequest['id']);
+        $categoryId = $this->productService->getCategoryId((int)$idRequest['id']); 
 
-            return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
-        }
-
-        return redirect()->back();
+        return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
     }
     public function create(ProductsRequest $productsRequest): RedirectResponse
     {
