@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('count')->nullable(false);
             $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('image_id')->unsigned();
             $table->timestamps();
         });
 
