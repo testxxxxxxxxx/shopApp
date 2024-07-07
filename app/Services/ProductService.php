@@ -10,43 +10,50 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductService
 {
-    protected int $id;
-
-    public function __construct(private int $i)
+    public function getName(int $id): string | bool
     {
-        $this->id = $i;
-        
+        $product = Product::query()->find($id);
+
+        if($product->name)
+            return false;
+
+        return $product->name;
     }
-
-    public function getName(int $id): string
+    public function getPrice(int $id): float | bool
     {
-        $name = Product::query()->find($id)->get('name');
+        $product = Product::query()->find($id);
 
-        return $name[0]['name'];
+        if(!$product->price)
+            return false;
+
+        return $product->price;
     }
-    public function getPrice(int $id): float
+    public function getWeight(int $id): float | bool
     {
-        $price = Product::query()->find($id)->get('price');
+        $product = Product::query()->find($id);
 
-        return $price[0]['price'];
+        if(!$product->weight)
+            return false;
+
+        return $product->weight;
     }
-    public function getWeight(int $id): float
+    public function getCategoryId(int $id): int | bool
     {
-        $weight = Product::query()->find($id)->get('weight');
+        $product = Product::query()->find($id);
 
-        return $weight[0]['price'];
+        if(!$product->category_id)
+            return false;
+
+        return $product->category_id;
     }
-    public function getCategoryId(int $id): int
+    public function getCount(int $id): int | bool
     {
-        $categoryId = Product::query()->find($id)->get('category_id');
+        $product = Product::query()->find($id);
 
-        return $categoryId[0]['category_id'];
-    }
-    public function getCount(int $id): int
-    {
-        $count = Product::query()->find($id)->get('count');
+        if(!$product->count)
+            return false;
 
-        return $count[0]['count'];
+        return $product->count;
     }
     public function create(string $name, float $price, float $weight, int $count, int $categoryId): Model
     {

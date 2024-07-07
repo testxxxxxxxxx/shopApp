@@ -9,17 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryService
 {
-    public function __construct(private int $id)
+    public function getName(int $id): string | bool
     {
-        $this->id = $id;
+        $product = Category::query()->find($id);
 
-    }
+        if($product->name)
+            return false;
 
-    public function getName(int $id): string
-    {
-        $name = Category::query()->find($id)->get('name');
-
-        return $name[0]['name'];
+        return $product->name;
     }
     public function create(string $name): int
     {

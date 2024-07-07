@@ -9,12 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class OrderService
 {
-    public function __construct(private int $id)
-    {
-        $this->id = $id;
-
-    }
-
     public function getAllOrders(): Collection
     {
         $allOrders = Order::query()->get(['product_id', 'date', 'from', 'to']);
