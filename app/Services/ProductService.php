@@ -55,6 +55,15 @@ class ProductService
 
         return $product->count;
     }
+    public function getImageId(int $id): int | bool 
+    {
+        $product = Product::query()->find($id);
+
+        if(!$product->image_id)
+            return false;
+
+        return $product->image_id;
+    }
     public function create(string $name, float $price, float $weight, int $count, int $categoryId): Model
     {
         $productIsCreated = Product::query()->create([

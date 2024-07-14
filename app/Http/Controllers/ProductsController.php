@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ProductService;
+use App\Services\ImageService;
+use App\Services\ImageCRUDService;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\ProductsRequest;
 use Illuminate\Contracts\View\Factory;
@@ -13,9 +15,11 @@ use Illuminate\Contracts\View\View;
 
 class ProductsController extends Controller
 {
-    public function __construct(private ProductService $productService)
+    public function __construct(private ProductService $productService, private ImageService $imageService, private ImageCRUDService $imageCRUDService)
     {
         $this->productService = $productService;
+        $this->imageService = $imageService;
+        $this->imageCRUDService = $imageCRUDService;
 
     }
 
@@ -30,9 +34,12 @@ class ProductsController extends Controller
         $price = $this->productService->getPrice((int)$idRequest['id']);
         $weight = $this->productService->getWeight((int)$idRequest['id']);
         $count = $this->productService->getCount((int)$idRequest['id']);
-        $categoryId = $this->productService->getCategoryId((int)$idRequest['id']); 
+        $categoryId = $this->productService->getCategoryId((int)$idRequest['id']);
+        $imageId = $this->productService->getImageId((int)$idRequest['image_id']);
 
-        return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
+        $file = $this->imageService->getFile($imageId);
+
+        return view('index', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId, 'file' => $file]);
     }
     public function create(ProductsRequest $productsRequest): RedirectResponse
     {

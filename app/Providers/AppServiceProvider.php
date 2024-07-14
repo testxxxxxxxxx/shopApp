@@ -11,6 +11,7 @@ use App\Services\TimeService;
 use App\Services\PersonalDataUserService;
 use App\Services\OrderValidator;
 use App\Services\ImageService;
+use App\Services\ImageCRUDService;
 use \DateTime;
 
 class AppServiceProvider extends ServiceProvider
@@ -53,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ImageService::class,function($app){
 
             return new ImageService();
+        });
+
+        $this->app->bind(ImageCRUDService::class,function($app){
+
+            return new ImageCRUDService();
         });
         
     }
