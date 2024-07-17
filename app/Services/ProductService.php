@@ -64,7 +64,7 @@ class ProductService
 
         return $product->image_id;
     }
-    public function create(string $name, float $price, float $weight, int $count, int $categoryId): Model
+    public function create(string $name, float $price, float $weight, int $count, int $categoryId, int $imageId): Model
     {
         $productIsCreated = Product::query()->create([
 
@@ -73,14 +73,15 @@ class ProductService
             'weight' => $weight,
             'count' => $count,
             'category_id' => $categoryId,
+            'image_id' => $imageId
 
         ]);
 
         return $productIsCreated;
     }
-    public function update(int $id, float $price, float $weight, int $count, int $categoryId): int
+    public function update(int $id, float $price, float $weight, int $count, int $categoryId, int $imageId): int
     {
-        $productIsUpdated = Product::query()->where('id', $id)->update(['price' => $price, 'weight' => $weight, 'count' => $count, 'category_id' => $categoryId]);
+        $productIsUpdated = Product::query()->where('id', $id)->update(['price' => $price, 'weight' => $weight, 'count' => $count, 'category_id' => $categoryId, 'image_id' => $imageId]);
 
         return $productIsUpdated;
     }

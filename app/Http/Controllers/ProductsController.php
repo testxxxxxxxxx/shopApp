@@ -51,7 +51,11 @@ class ProductsController extends Controller
             $count = $productsRequest['count'];
             $categoryId = $productsRequest['category_id'];
 
-            $productIsCreated = $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$count, (int)$categoryId);
+            $file = $productsRequest->file('image');
+
+            $imageId = 1;
+
+            $productIsCreated = $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$count, (int)$categoryId, (int)$imageId);
 
             if($productIsCreated)
                 return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
@@ -73,8 +77,9 @@ class ProductsController extends Controller
             $weight = $productsRequest['weight'];
             $count = $productsRequest['count'];
             $categoryId = $productsRequest['category_id'];
+            $imageId = $productsRequest['image_id'];
 
-            $productIsUpdated = $this->productService->update((int)$id, (float)$name, (float)$weight, (int)$count, (int)$categoryId);
+            $productIsUpdated = $this->productService->update((int)$id, (float)$name, (float)$weight, (int)$count, (int)$categoryId, (int)$imageId);
 
             if($productIsUpdated)
                 return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'categoryId' => $categoryId]);
