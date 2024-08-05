@@ -6,20 +6,23 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Services\ImageService;
 use App\Services\ImageCRUDService;
+use App\Services\FileContentGetter;
 use App\Http\Requests\IdRequest;
 use App\Http\Requests\ProductsRequest;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 
 class ProductsController extends Controller
 {
-    public function __construct(private ProductService $productService, private ImageService $imageService, private ImageCRUDService $imageCRUDService)
+    public function __construct(private ProductService $productService, private ImageService $imageService, private ImageCRUDService $imageCRUDService, private FileContentGetter $fileContentGetter)
     {
         $this->productService = $productService;
         $this->imageService = $imageService;
         $this->imageCRUDService = $imageCRUDService;
+        $this->fileContentGetter = $fileContentGetter;
 
     }
 
@@ -53,15 +56,30 @@ class ProductsController extends Controller
 
             $file = $productsRequest->file('image');
 
-            $imageId = 1;
+            $fileName = $file->getFilename();
+            $fileExt = $file->getExtension();
+            $fileTmpUrl = $file->getPathname();
+            $fileSize = $file->getSize();
+            $fileMaxSize = 12000;
 
-            $productIsCreated = $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$count, (int)$categoryId, (int)$imageId);
+            if($fileName < 0 || $fileName > $fileMaxSize)
+                return redirect()->back();
 
-            if($productIsCreated)
+            try{
+
+                $fileContent = $this->fileContentGetter->getContent($fileTmpUrl);
+
+                $imageId = $this->imageCRUDService->create($fileName, $fileExt, $fileContent, $fileSize);
+
+                $this->productService->create((string)$name, (float)$price, (float)$weight, (int)$count, (int)$categoryId, (int)$imageId);
+
                 return redirect()->route('showProduct', ['name' => $name, 'price' => $price, 'weight' => $weight, 'count' => $count, 'categoryId' => $categoryId]);
+            }
+            catch(QueryException $e)
+            {
 
-            return redirect()->back();
-
+                return redirect()->back();
+            }
         }
 
         return redirect()->back();
